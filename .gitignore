@@ -44,3 +44,4 @@ out/
 
 # exclude .env
 .env
+src/main/resources/application.yaml
