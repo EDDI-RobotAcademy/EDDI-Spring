@@ -15,14 +15,14 @@ class GithubAuthenticationController(
     private val githubAuthenticationService: GithubAuthenticationService
 ) {
 
-    @GetMapping("/authorize-code")
-    fun handleGithubRedirect(@RequestParam code: String?): ResponseEntity<String?>? {
+    @GetMapping("/access-token")
+    fun handleGithubRedirect(@RequestParam code: String?): ResponseEntity<Any> {
         return if (code != null) {
             val accessToken: String = githubAuthenticationService.requestAccessTokenWithAuthorizeCode(code)
             println("AccessToken: $accessToken")
             // 액세스 토큰을 사용하여 필요한 후속 작업 수행
-            ResponseEntity.ok("Success")
-//            ResponseEntity.ok("Access Token: $accessToken")
+//            ResponseEntity.ok(userInfo)
+            ResponseEntity.ok("Access Token: $accessToken")
         } else {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization code is missing")
         }
