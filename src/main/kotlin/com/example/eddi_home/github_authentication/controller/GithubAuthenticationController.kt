@@ -1,12 +1,10 @@
 package com.example.eddi_home.github_authentication.controller
 
+import com.example.eddi_home.github_authentication.controller.request_form.AccessTokenRequestForm
 import com.example.eddi_home.github_authentication.service.GithubAuthenticationService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -15,16 +13,16 @@ class GithubAuthenticationController(
     private val githubAuthenticationService: GithubAuthenticationService
 ) {
 
-    @GetMapping("/authorize-code")
-    fun handleGithubRedirect(@RequestParam code: String?): ResponseEntity<String?>? {
-        return if (code != null) {
-            val accessToken: String = githubAuthenticationService.requestAccessTokenWithAuthorizeCode(code)
-            println("AccessToken: $accessToken")
-            // 액세스 토큰을 사용하여 필요한 후속 작업 수행
-            ResponseEntity.ok("Success")
-//            ResponseEntity.ok("Access Token: $accessToken")
-        } else {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Authorization code is missing")
+    @PostMapping("/access-token")
+    fun handleGithubRedirect(@RequestBody form: AccessTokenRequestForm): ResponseEntity<Any> {
+        return try {
+            val code = form.code
+            val accessToken = githubAuthenticationService.requestAccessTokenWithAuthorizeCode(code)
+            val userInfo = githubAuthenticationService.requestUserInfoWithAccessToken(accessToken)
+
+            ResponseEntity.ok(userInfo)
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to process access token")
         }
     }
 }
