@@ -22,4 +22,10 @@ class AccountController(
         accountService.createAccount(request.nickname, request.email)
         return ResponseEntity("Account created successfully", HttpStatus.CREATED)
     }
+
+    @PostMapping("/check-email-duplication")
+    fun checkEmailDuplication(@RequestBody emailRequest: EmailRequest): ResponseEntity<Boolean> {
+        val isTaken = accountService.isEmailTaken(emailRequest.email)
+        return ResponseEntity(isTaken, HttpStatus.OK)
+    }
 }

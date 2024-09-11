@@ -17,4 +17,8 @@ class AccountServiceImpl(
 
 //        redisCache.setKeyAndValue("account:$nickname", email)
     }
+
+    override fun isEmailTaken(email: String): Boolean {
+        return accountRepository.findByEmail(email) != null
+    }
 }
