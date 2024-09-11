@@ -18,9 +18,7 @@ class GithubAuthenticationController(
         return try {
             val code = form.code
             val accessToken = githubAuthenticationService.requestAccessTokenWithAuthorizeCode(code)
-            println("AccessToken: $accessToken")
             val userInfo = githubAuthenticationService.requestUserInfoWithAccessToken(accessToken)
-            println("UserInfo: $userInfo")
 
             ResponseEntity.ok(userInfo)
         } catch (e: Exception) {
