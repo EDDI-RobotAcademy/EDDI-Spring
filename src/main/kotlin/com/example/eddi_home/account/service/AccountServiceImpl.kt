@@ -21,4 +21,8 @@ class AccountServiceImpl(
     override fun isEmailTaken(email: String): Boolean {
         return accountRepository.findByEmail(email) != null
     }
+
+    override fun isNicknameTaken(nickname: String): Boolean {
+        return accountRepository.findByNickname(nickname) != null
+    }
 }
