@@ -19,8 +19,8 @@ class AccountController(
 
     @PostMapping("/apply")
     fun applyAccount(@RequestBody requestForm: AccountRequestForm): ResponseEntity<String> {
-        accountService.createAccount(requestForm.nickname, requestForm.email)
-        return ResponseEntity("Account created successfully", HttpStatus.CREATED)
+        val userToken = accountService.createAccount(requestForm.nickname, requestForm.email)
+        return ResponseEntity(userToken, HttpStatus.CREATED)
     }
 
     @PostMapping("/check-email-duplication")
