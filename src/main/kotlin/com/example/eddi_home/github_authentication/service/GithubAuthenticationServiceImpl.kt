@@ -2,6 +2,7 @@ package com.example.eddi_home.github_authentication.service
 
 import com.example.eddi_home.github_authentication.repository.GithubAuthenticationRepository
 import com.example.eddi_home.github_authentication.service.response.GithubUserInfoResponse
+import com.example.eddi_home.redis.RedisCache
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -12,7 +13,6 @@ import org.springframework.web.client.RestTemplate
 @Service
 class GithubAuthenticationServiceImpl(
     private val githubAuthenticationRepository: GithubAuthenticationRepository,
-    private val restTemplate: RestTemplate
 ) : GithubAuthenticationService {
 
     override fun requestAccessTokenWithAuthorizeCode(authorizeCode: String): String {
